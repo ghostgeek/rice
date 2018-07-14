@@ -1,0 +1,80 @@
+html, body, .sf-login {
+    height: 100%;
+}
+
+.sf-login-skin {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('../images/login/bg.png');
+    z-index: -1;
+}
+
+.sf-login-wrap {
+    position: absolute;
+    top: calc(50% - 200px);
+    left: calc(50% - 436px);
+    width: 872px;
+    height: 400px;
+}
+
+.sf-login-logo-wrap {
+    float: left;
+    position: relative;
+    width: 522px;
+    height: 400px;
+    background-color: rgba(13, 13, 13, 0.5);
+    border-radius: 2px 0 0 2px;
+}
+
+.sf-login-logo-wrap .sf-login-logo {
+    position: absolute;
+    top: 88px;
+    left: 198px;
+    width: 127px;
+    height: 130px;
+    background: url('../images/login/logo.png');
+}
+
+.sf-login-logo-wrap .sf-login-title {
+    position: absolute;
+    top: 272px;
+    left: 86px;
+    width: 348px;
+    height: 41px;
+    background: url('../images/login/title.png');
+}
+
+.sf-login-content {
+    float: left;
+}
+
+.sf-login-photo {
+    position: relative;
+    margin: 31px auto 22px;
+    width: 90px;
+    height: 90px;
+    background-color: #eeeeee;
+    border-radius: 45px;
+}
+
+.sf-login-photo-wrap {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    padding: 9px 12px;
+    width: 76px;
+    height: 76px;
+    background-color: #d9d9d9;
+    border-radius: 37px;
+    border: solid 5px #ffffff;
+}
+
+.sf-login-photo-wrap img {
+
+}
+
+.sf-form-content {
+    width: 280px;
+    margin: 0 auto;
+}
