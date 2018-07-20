@@ -14,9 +14,9 @@ const routes = [
     {
         path: '/',
         component: Index,
-        meta: {
-            requireAuth: true,
-        }
+        // meta: {
+        //     requireAuth: true,
+        // }
     },
     {
         path: '/test',
@@ -25,6 +25,10 @@ const routes = [
     {
         path: '/login',
         component: Login
+    },
+    {
+        path: '/testIndex',
+        component: TestIndex
     }
 ];
 
