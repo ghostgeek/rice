@@ -1,0 +1,26 @@
+.sf-test-wrap {
+    padding: 16px 20px;
+}
+
+.sf-test-title {
+    margin-bottom: 24px;
+}
+
+.sf-test-title .label {
+    font-size: 14px;
+    padding: 0 14px;
+    border-left: 2px solid #3d99f7;
+}
+
+.sf-test-table-operate {
+    margin-bottom: 24px;
+}
+
+.sf-test-table-operate button {
+    margin-right: 16px;
+}
+
+.sf-test-page {
+    text-align: center;
+    margin-top: 24px;
+}
