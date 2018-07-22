@@ -7,7 +7,9 @@ import store from './store'
 import Index from './views/sf_index.vue'
 import Login from './views/sf_login.vue'
 import TestIndex from './views/sf_test_index.vue'
-
+import KnowLedgeIndex from './views/sf_kownledge_index.vue'
+import SoftIndex from './views/sf_soft_index.vue'
+import DevelopIndex from './views/sf_develop_index.vue'
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,6 +20,20 @@ const routes = [
         //     requireAuth: true,
         // }
     },
+    {
+      path: '/knowledgeIndex',
+      component: KnowLedgeIndex,
+      children: [{
+        path:'soft',
+        component: SoftIndex
+      },
+      {
+        path:'develop',
+        component: DevelopIndex
+      }
+      ]
+    },
+
     {
         path: '/test',
         component: TestIndex
