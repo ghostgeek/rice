@@ -4,6 +4,7 @@ import iView from 'iview';
 import App from './app'
 import router from './router'
 import store from './store'
+import './config'
 import 'iview/dist/styles/iview.css';
 
 Vue.use(iView); // 组件库
@@ -19,5 +20,7 @@ const app = new Vue({
     router: router,
     store,
     axios,
-    render: h => h(App)
+    render: function (h) {
+        return h(App);
+    }
 })
