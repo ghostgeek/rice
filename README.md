@@ -7,3 +7,6 @@
 $npm install 
 <br />
 $npm run dev
+
+# 调用vue-devtools
+$./node_modules/.bin/vue-devtools
