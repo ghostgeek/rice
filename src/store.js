@@ -11,7 +11,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        user: {},
+        user: {
+            userid: '',
+            username: 'yhpei',
+            roleid: '组长',
+            deptid: '',
+            operate: ['修改', '补充信息', '延期', '查看问题', '审核', '转更新', '测试完成']
+        },
         token: null,
         title: ''
     },

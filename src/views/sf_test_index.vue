@@ -19,7 +19,7 @@
         <Modal
                 v-model="modal1"
                 title="添加申请"
-                @on-ok="ok"
+                @on-ok="apply"
                 @on-cancel="cancel">
             <Form :model="formItem" :label-width="100">
                 <FormItem label="模块">
@@ -55,6 +55,68 @@
                 </FormItem>
             </Form>
         </Modal>
+
+        <!-- 审核 -->
+        <Modal
+                v-model="modal审核"
+                title="审核"
+                @on-ok="check"
+                @on-cancel="cancel">
+            <Form :model="formItem2" :label-width="100">
+                <FormItem label="审核结果">
+                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请审核">
+                        <Option value="1">通过</Option>
+                        <Option value="0">退回</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="预计开始时间">
+                    <DatePicker type="date" v-model="formItem2.START_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
+                </FormItem>
+                <FormItem label="预计完成时间">
+                    <DatePicker type="date" v-model="formItem2.END_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
+                </FormItem>
+                <FormItem label="测试人员">
+                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请选择测试人员">
+                        <Option value="1">裴杨华</Option>
+                        <Option value="0">张国才</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="测试jira地址">
+                    <Input v-model="formItem2.JIRA_URL" placeholder="请输入jira地址"></Input>
+                </FormItem>
+            </Form>
+        </Modal>
+
+
+        <Modal
+                v-model="modal审核"
+                title="审核"
+                @on-ok="check"
+                @on-cancel="cancel">
+            <Form :model="formItem2" :label-width="100">
+                <FormItem label="审核结果">
+                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请审核">
+                        <Option value="1">通过</Option>
+                        <Option value="0">退回</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="预计开始时间">
+                    <DatePicker type="date" v-model="formItem2.START_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
+                </FormItem>
+                <FormItem label="预计完成时间">
+                    <DatePicker type="date" v-model="formItem2.END_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
+                </FormItem>
+                <FormItem label="测试人员">
+                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请选择测试人员">
+                        <Option value="1">裴杨华</Option>
+                        <Option value="0">张国才</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="测试jira地址">
+                    <Input v-model="formItem2.JIRA_URL" placeholder="请输入jira地址"></Input>
+                </FormItem>
+            </Form>
+        </Modal>
     </div>
 </template>
 
@@ -86,7 +148,18 @@
                     },
                     {
                         title: '提测FTP',
-                        key: 'FTP_URL'
+                        key: 'FTP_URL',
+                        render: (h, params) => {
+                            let row = params.row;
+                            let ftp_url = row.FTP_URL;
+
+                            return h('a', {
+                                domProps: {
+                                    href: global.host + 'download?' + ftp_url,
+                                    target: '_blank'
+                                }
+                            }, '下载安装包');
+                        }
                     },
                     {
                         title: '测试优先级',
@@ -107,9 +180,9 @@
                     {
                         title: '任务状态',
                         key: 'STATUS',
-                        render: function (h, params) {
-                            var row = params.row;
-                            var status = row.STATUS;
+                        render: (h, params) => {
+                            let row = params.row;
+                            let status = row.STATUS;
 
                             return h('Tag', {
                                 props: {
@@ -134,28 +207,36 @@
                     {
                         title: '操作',
                         key: 'test_operate',
-                        render: function (h, params) {
-                            // 依据状态字段和当前用户 获取可操作按钮 todo 和国才商定下
-                            var row = params.row;
-                            var test_operate = row.test_operate;
-                            var status = row.STATUS;
+                        render: (h, params) => {
+                            // 依据状态字段和当前用户 获取可操作按钮
+                            let user = this.$store.state.user;
+                            let row = params.row;
+                            let status = row.STATUS;
 
-                            return h('div', [
-                                h('a', {
-                                    props: {},
-                                    on: {
-                                        click: () => {
-                                            // 跳转
-                                            console.log('a');
+                            let operates = this.$lodash.intersection(user.operate, global.test_status[status].operate);
+                            let operateObj = [];
+                            for (let i in operates) {
+                                operateObj.push(
+                                    h('a', {
+                                        props: {},
+                                        on: {
+                                            click: () => {
+                                                // 跳转
+//                                                console.log(operates[i]);
+                                                this['modal' + operates[i]] = true
+                                            }
                                         }
-                                    }
-                                }, '修改')
-                            ]);
+                                    }, operates[i])
+                                )
+                            }
+
+                            return h('div', operateObj);
                         }
                     }
                 ],
                 testData: [],
-                modal1: false,
+                modal1: false, // 弹框默认不显示
+                'modal审核': false,
                 formItem: {
                     MODULE_NAME: '',
                     TEST_NAME: '',
@@ -165,17 +246,34 @@
                     MD5: '',
                     DEPONDENCY: '',
                     EXPECT_TIME: ''
+                },
+                formItem2: {
+                    CHECK_STATUS: '',
+                    START_TIME: '',
+                    END_TIME: '',
+                    TEST_USER: '',
+                    JIRA_URL: ''
                 }
             }
         },
         methods: {
-            ok () {
+            apply () {
                 // form表单提交
-                this.$http.post(this.serverName + 'addApply', this.formItem).then((response) => {
+                this.$http.post(global.host + 'addApply', this.formItem).then((response) => {
                     if (response == true) {
                         this.$Message.info('申请已提交，等待审核');
                     } else {
-                        this.$Message.error('申请提交失败');
+                        this.$Message.error('申请提交异常');
+                    }
+                });
+            },
+            check () {
+                // form表单提交
+                this.$http.post(global.host + 'checkTestItemInfo', this.formItem).then((response) => {
+                    if (response == true) {
+                        this.$Message.info('审核完成');
+                    } else {
+                        this.$Message.error('审核异常');
                     }
                 });
             },
@@ -184,18 +282,18 @@
             },
             getTestPage(currentPageNo) {
                 // 分页加载数据
-                var params = {
+                let params = {
                     token: this.$store.state.token,
                     pageNo: currentPageNo,
                     pageSize: 10
                 }
 
                 // 获取表格数据
-                this.$http.post(this.serverName + 'getTestPage', params).then((response) => {
+                this.$http.post(global.host + 'getTestPage', params).then((response) => {
                     // 解析JSON
-                    var result = JSON.parse(response);
-                    var code = result.code;
-                    var data = result.data;
+                    let result = JSON.parse(response);
+                    let code = result.code;
+                    let data = result.data;
 
                     if (code == 0) {
                         // 初始化总量
@@ -209,7 +307,7 @@
         },
         created() {
 //            this.getTestPage(1);
-            console.log(global.host)
+            console.log(this.$store.state.user)
             this.testData = [
                 {
                     submit_time: 'John Brown',
@@ -226,7 +324,24 @@
                     test_apply_user: '2016-10-03',
                     test_verify_user: '2016-10-03',
                     test_user: '2016-10-03',
-                    test_operate: 'update check'
+                    FTP_URL: '123123'
+                },
+                {
+                    submit_time: 'John Brown',
+                    test_name: 18,
+                    test_module: 'New York No. 1 Lake Park',
+                    test_content: '2016-10-03',
+                    test_MD5: '2016-10-03',
+                    test_ftp: '2016-10-03',
+                    test_priority: '2016-10-03',
+                    test_env: '2016-10-03',
+                    test_startTime: '2016-10-03',
+                    test_endTime: '2016-10-03',
+                    STATUS: '1',
+                    test_apply_user: '2016-10-03',
+                    test_verify_user: '2016-10-03',
+                    test_user: '2016-10-03',
+                    FTP_URL: 'asq'
                 }
             ]
         }
