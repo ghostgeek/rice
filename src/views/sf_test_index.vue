@@ -3,7 +3,7 @@
         <!-- 头部 -->
         <div class="sf-test-title">
             <span class="label">测试列表</span>
-            <Tag color="yellow">{{ counter }}条</Tag>
+            <Tag color="warning">{{ counter }}条</Tag>
         </div>
         <!-- 表格操作 -->
         <div class="sf-test-table-operate">
@@ -76,9 +76,9 @@
                     <DatePicker type="date" v-model="formItem2.END_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
                 </FormItem>
                 <FormItem label="测试人员">
-                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请选择测试人员">
-                        <Option value="1">裴杨华</Option>
-                        <Option value="0">张国才</Option>
+                    <Select v-model="formItem2.TEST_USER" placeholder="请选择测试人员">
+                        <Option value="yhpei">裴杨华</Option>
+                        <Option value="gczhang">张国才</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="测试jira地址">
@@ -87,33 +87,36 @@
             </Form>
         </Modal>
 
-
+        <!-- 补充信息 -->
         <Modal
-                v-model="modal审核"
-                title="审核"
-                @on-ok="check"
+                v-model="modal补充信息"
+                title="补充信息"
+                @on-ok="ok"
                 @on-cancel="cancel">
-            <Form :model="formItem2" :label-width="100">
-                <FormItem label="审核结果">
-                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请审核">
-                        <Option value="1">通过</Option>
-                        <Option value="0">退回</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="预计开始时间">
-                    <DatePicker type="date" v-model="formItem2.START_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
-                </FormItem>
+            <!-- 历史补充信息 -->
+            <Divider orientation="left">2018-01-12 12:12:12</Divider>
+            <p>这是历史信息1</p>
+            <Divider orientation="left">2018-01-12 12:11:12</Divider>
+            <p>这是历史信息2</p>
+
+            <Divider orientation="left">2018-01-12 12:11:12</Divider>
+            <!-- 新的补充信息 -->
+            <Input v-model="supplement" type="textarea" :autosize="true"  placeholder="Enter something..." />
+            <Button type="primary">保存</Button>
+        </Modal>
+
+        <!-- 延期 -->
+        <Modal
+                v-model="modal延期"
+                title="延期"
+                @on-ok="ok"
+                @on-cancel="cancel">
+            <!-- 延期历史 -->
+
+            <!-- 延期填写延期时间 -->
+            <Form :model="formItem4" :label-width="100">
                 <FormItem label="预计完成时间">
-                    <DatePicker type="date" v-model="formItem2.END_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
-                </FormItem>
-                <FormItem label="测试人员">
-                    <Select v-model="formItem2.CHECK_STATUS" placeholder="请选择测试人员">
-                        <Option value="1">裴杨华</Option>
-                        <Option value="0">张国才</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="测试jira地址">
-                    <Input v-model="formItem2.JIRA_URL" placeholder="请输入jira地址"></Input>
+                    <DatePicker type="date" v-model="formItem4.END_TIME" placeholder="请选择日期" style="width: 200px"></DatePicker>
                 </FormItem>
             </Form>
         </Modal>
@@ -218,7 +221,9 @@
                             for (let i in operates) {
                                 operateObj.push(
                                     h('a', {
-                                        props: {},
+                                        domProps: {
+                                            className: 'test-operate-menu'
+                                        },
                                         on: {
                                             click: () => {
                                                 // 跳转
@@ -237,6 +242,8 @@
                 testData: [],
                 modal1: false, // 弹框默认不显示
                 'modal审核': false,
+                'modal补充信息': false,
+                'modal延期': false,
                 formItem: {
                     MODULE_NAME: '',
                     TEST_NAME: '',
@@ -253,10 +260,17 @@
                     END_TIME: '',
                     TEST_USER: '',
                     JIRA_URL: ''
-                }
+                },
+                formItem4: {
+                    END_TIME: ''
+                },
+                supplement: ''
             }
         },
         methods: {
+            ok () {
+
+            },
             apply () {
                 // form表单提交
                 this.$http.post(global.host + 'addApply', this.formItem).then((response) => {
