@@ -16,7 +16,7 @@ export default new Vuex.Store({
             username: 'yhpei',
             roleid: '组长',
             deptid: '',
-            operate: ['修改', '补充信息', '延期', '查看问题', '审核', '转更新', '测试完成']
+            operate: ['2', '3', '4', '5', '6', '7', '8']
         },
         token: null,
         title: ''
