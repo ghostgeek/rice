@@ -17,5 +17,20 @@ module.exports = merge(webpackBaseConfig, {
             allChunks: true
         }),
         new HtmlWebpackPlugin()
-    ]
+    ],
+    devServer: { //--content-base ./ --open --inline --hot --compress --history-api-fallback
+        contentBase: "./",
+        historyApiFallback: true,
+        inline: true,
+        compress: true,
+        port: 8080,
+        host: '192.168.2.108',
+        proxy: {
+            '/api': {
+                target: 'http://192.168.2.116:8080',
+                changeOrigin: true,
+                secure: false
+            }
+        }
+    }
 });

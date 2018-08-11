@@ -28,3 +28,8 @@
 .test-operate-menu {
     margin-right: 8px;
 }
+
+.sf-supply-info {
+    max-height: 400px;
+    overflow-y: auto;
+}
