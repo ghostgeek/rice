@@ -10,7 +10,7 @@
     "build": "webpack --progress --hide-modules --config webpack.prod.config.js"
   },
   "keywords": [],
-  "author": "tongxu",
+  "author": "xp",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
