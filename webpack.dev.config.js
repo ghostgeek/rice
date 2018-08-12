@@ -24,7 +24,7 @@ module.exports = merge(webpackBaseConfig, {
         inline: true,
         compress: true,
         port: 8080,
-        host: '192.168.2.108',
+        host: 'localhost',
         proxy: {
             '/api': {
                 target: 'http://192.168.2.116:8080',

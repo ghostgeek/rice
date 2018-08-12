@@ -6,6 +6,7 @@
   "scripts": {
     "init": "webpack --progress --config webpack.dev.config.js",
     "dev": "webpack-dev-server --config webpack.dev.config.js",
+    "clean": "rimraf ./dist/*",
     "build": "webpack --progress --hide-modules --config webpack.prod.config.js"
   },
   "keywords": [],
@@ -24,6 +25,7 @@
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.0.0",
     "babel-loader": "^7.1.5",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.11",
