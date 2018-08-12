@@ -10,7 +10,7 @@ module.exports = {
     entry: {
         chunk: './src/main.js',
         chunk0: ['vue', 'vue-router', 'axios', 'vuex'],
-        chunk1: ['lodash', 'mint-ui']
+        chunk1: ['lodash', 'iview']
     },
     output: { // 输出目录
         path: path.resolve(__dirname, './dist')
