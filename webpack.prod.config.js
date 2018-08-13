@@ -8,14 +8,16 @@ const common = require('./webpack.base.config.js');
 module.exports = merge(common, {
     output: {
         publicPath: '/dist/',
-        filename: '[name]-[hash].js'
+        filename: 'js/[name]-[hash].js'
     },
     plugins: [
         new ExtractTextPlugin({
-            filename: '[name]-[hash].css',
+            filename: 'css/[name]-[hash].css',
             allChunks: true
         }),
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'src/index_temp.html'
+        }),
         // 公共的
         new webpack.optimize.CommonsChunkPlugin({
             name: ['chunk0', 'chunk1']
