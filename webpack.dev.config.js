@@ -6,6 +6,9 @@ const webpackBaseConfig = require('./webpack.base.config.js');
 
 module.exports = merge(webpackBaseConfig, {
     devtool: 'hidden-source-map',
+    entry: {
+        chunk: './src/main.js'
+    }, // 入口
     output: {
         publicPath: '/dist/',
         filename: '[name].js',

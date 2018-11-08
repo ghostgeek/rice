@@ -6,6 +6,11 @@ const merge = require('webpack-merge');
 const common = require('./webpack.base.config.js');
 
 module.exports = merge(common, {
+    entry: {
+        chunk: './src/main.js',
+        chunk0: ['vue', 'vue-router', 'axios', 'vuex'],
+        chunk1: ['lodash', 'iview']
+    },
     output: {
         publicPath: '/dist/',
         filename: 'js/[name]-[hash].js'
